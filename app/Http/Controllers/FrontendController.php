@@ -92,66 +92,72 @@ class FrontendController extends Controller
         return $response->json();
     }
 
-    public function checkout(CheckoutRequest $request){
+    public function checkout(Request $request){
         $data = $request->all();
-        var_dump($data);
 
-        // // Get Carts data
-        // $carts = Cart::with(['product'])->where('users_id', Auth::user()->id)->get();
 
-        // // Add to Transaction data
-        // $data['users_id'] = Auth::user()->id;
-        // $data['total_price'] = $carts->sum('product.price');
+        // Get Carts data
+        $carts = Cart::with(['product'])->where('users_id', Auth::user()->id)->get();
+
+        // Add to Transaction data
+        $data['users_id'] = Auth::user()->id;
+        $data['total_price'] = $carts->sum('product.price');
     
-        // // Create Transaction
-        // $transaction = Transaction::create($data);
+        // Create Transaction
+        $transaction = Transaction::create($data);
 
-        // // Create Transaction item
-        // foreach($carts as $cart) {
-        //     $items[] = TransactionItem::create([
-        //         'transactions_id' => $transaction->id,
-        //         'users_id' => $cart->users_id,
-        //         'products_id' => $cart->products_id,
-        //     ]);
-        // }
+        // Create Transaction item
+        foreach($carts as $cart) {
+            $items[] = TransactionItem::create([
+                'transactions_id' => $transaction->id,
+                'users_id' => $cart->users_id,
+                'products_id' => $cart->products_id,
+            ]);
+        }
         
-        // // Delete cart after transaction
-        // Cart::where('users_id', Auth::user()->id)->delete();
+        // Delete cart after transaction
+        Cart::where('users_id', Auth::user()->id)->delete();
 
-        // // Konfigurasi midtrans
-        // Config::$serverKey = config('services.midtrans.serverKey');
-        // Config::$isProduction = config('services.midtrans.isProduction');
-        // Config::$isSanitized = config('services.midtrans.isSanitized');
-        // Config::$is3ds = config('services.midtrans.is3ds');
+        // Konfigurasi midtrans
+        Config::$serverKey = config('services.midtrans.serverKey');
+        Config::$isProduction = config('services.midtrans.isProduction');
+        Config::$isSanitized = config('services.midtrans.isSanitized');
+        Config::$is3ds = config('services.midtrans.is3ds');
 
-        // // Setup midtrans variable
-        // $midtrans = array(
-        //     'transaction_details' => array(
-        //         'order_id' =>  'LX-' . $transaction->id,
-        //         'gross_amount' => (int) $transaction->total_price,
-        //     ),
-        //     'customer_details' => array(
-        //         'first_name'    => $transaction->name,
-        //         'email'         => $transaction->email
-        //     ),
-        //     'enabled_payments' => array('gopay','bank_transfer'),
-        //     'vtweb' => array()
-        // );
+        // Setup midtrans variable
+        $midtrans = array(
+            'transaction_details' => array(
+                'order_id' =>  'LX-' . $transaction->id,
+                'gross_amount' => (int) $transaction->total_price,
+            ),
+            'customer_details' => array(
+                'first_name'    => $transaction->name,
+                'email'         => $transaction->email
+            ),
+            'enabled_payments' => array('gopay','bank_transfer'),
+            'vtweb' => array()
+        );
 
-        // try {
-        //     // Ambil halaman payment midtrans
-        //     $paymentUrl = Snap::createTransaction($midtrans)->redirect_url;
+        try {
+            // Ambil halaman payment midtrans
+            $paymentUrl = Snap::createTransaction($midtrans)->redirect_url;
 
-        //     $transaction->payment_url = $paymentUrl;
-        //     $transaction->save();
+            $transaction->payment_url = $paymentUrl;
+            $transaction->save();
 
-        //     // Redirect ke halaman midtrans
-        //     return redirect($paymentUrl);
-        // }
-        // catch (Exception $e) {
-        //     return $e;
-        // }
+            // Redirect ke halaman midtrans
+            return redirect($paymentUrl);
+        }
+        catch (Exception $e) {
+            return $e;
+        }
 
+    }
+
+    public function updateCount()
+    {
+        $count = Cart::count();
+        return response()->json(['count' => $count]);
     }
 
     public function succes(Request $request)

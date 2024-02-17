@@ -131,6 +131,18 @@
                         </div>
         
                         <div class="flex flex-col mb-4">
+                          <label for="email" class="text-sm mb-2">Address</label>
+                          <input
+                            data-input
+                            name="address"
+                            type="input"
+                            id="address"
+                            class="border-gray-200 border rounded-lg px-4 py-2 bg-white text-sm focus:border-blue-200 focus:outline-none"
+                            placeholder="Input your address"
+                          />
+                        </div>
+
+                        <div class="flex flex-col mb-4">
                           <label for="email" class="text-sm mb-2">Email Address</label>
                           <input
                             data-input
@@ -211,7 +223,7 @@
                           id="total_berat"
                           value="{{ $total_berat }}"
                           class="border-gray-200 border rounded-lg px-4 py-2 bg-white text-sm focus:border-blue-200 focus:outline-none"
-                          disabled
+                          readonly
                         />
                       </div>
 
@@ -253,8 +265,8 @@
                           name="cost"
                           id="cost"
                           class="border-gray-200 border rounded-lg px-4 py-2 bg-white text-sm focus:border-blue-200 focus:outline-none"
-                          disabled
-                        />
+                          readonly
+                          />
                       </div>
         
                         <div class="flex flex-col mb-4">
@@ -484,7 +496,7 @@
                 var selectedOption = $(this).find('option:selected');
                 var selectedValue = selectedOption.val();
                 var ongkir = selectedOption.data('ongkir');
-
+                
                 $('#cost').val(ongkir);
               });
             });

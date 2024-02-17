@@ -23,6 +23,7 @@
                         {data: 'id', name: 'id', width: '5%'},
                         {data: 'name', name: 'name'},
                         {data: 'price', name: 'price'},
+                        {data: 'jumlah', name: 'jumlah'},
                         {data: 'berat', name: 'berat'},
                         {
                             data: 'action',
@@ -53,6 +54,7 @@
                                 <th>Id</th>
                                 <th>Nama</th>
                                 <th>Harga</th>
+                                <th>Jumlah</th>
                                 <th>Berat</th>
                                 <th>Aksi</th>
                             </tr>

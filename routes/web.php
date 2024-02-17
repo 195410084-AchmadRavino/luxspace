@@ -26,6 +26,7 @@ Route::get('/details/{slug}', [FrontendController::class, 'details'])->name('det
 Route::get('/cities/{province_id}', [FrontendController::class, 'getCities']);
 Route::get('/ongkir', [FrontendController::class, 'check_ongkir']);
 Route::post('/ongkir', [FrontendController::class, 'check_ongkir']);
+Route::get('/update-count', [FrontendController::class, 'updateCount']);
 
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         Route::get('/cart', [FrontendController::class, 'cart'])->name('cart');

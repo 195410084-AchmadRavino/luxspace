@@ -24,7 +24,7 @@
                         {data: 'name', name: 'name'},
                         {data: 'phone', name: 'phone'},
                         {data: 'courier', name: 'courier'},
-                        {data: 'berat', name: 'berat'},
+                        {data: 'total_berat', name: 'total_berat'},
                         {data: 'total_price', name: 'total_price'},
                         {data: 'status', name: 'status'},
                         {
